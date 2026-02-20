@@ -9,7 +9,7 @@ import {
     Legend,
     ResponsiveContainer
 } from 'recharts';
-import { Trash2, ArrowLeft } from 'lucide-react';
+import { Trash2, ArrowLeft, Scale } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -25,7 +25,7 @@ export default function Compare() {
                     animate={{ scale: 1, opacity: 1 }}
                     className="h-32 w-32 bg-slate-100 rounded-full flex items-center justify-center mb-6 shadow-sm border border-slate-200"
                 >
-                    <span className="text-5xl">📊</span>
+                    <Scale className="h-14 w-14 text-slate-400" strokeWidth={1.5} />
                 </motion.div>
                 <h2 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Nothing to Compare</h2>
                 <p className="text-slate-500 mb-8 max-w-md text-lg">You haven't added any hotels to compare yet. Head back to search and select up to 4 hotels.</p>
@@ -46,7 +46,7 @@ export default function Compare() {
     const chartData = compareList.map(hotel => ({
         name: (hotel.name?.content || hotel.name || 'Unknown').substring(0, 15) + '...', // truncate for chart fit
         fullName: hotel.name?.content || hotel.name || 'Unknown',
-        price: hotel.minRate || Math.floor(Math.random() * 200) + 50, // mock fallback
+        price: hotel.minRate || (50 + (Math.abs(String(hotel.code || 'x').split('').reduce((h, c) => c.charCodeAt(0) + ((h << 5) - h), 0)) % 200)),
         rating: hotel.categoryCode ? parseInt(hotel.categoryCode[0], 10) : 4,
     }));
 

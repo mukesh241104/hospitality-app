@@ -30,7 +30,8 @@ export default function HotelDetails() {
     const rating = hotel.categoryCode ? parseInt(hotel.categoryCode[0], 10) : 4;
     const address = hotel.address?.content || 'Central Location';
     const city = hotel.city?.content || 'Unknown City';
-    const price = hotel.minRate || Math.floor(Math.random() * 200) + 50;
+    const generateSeedLocal = (str) => { let h = 0; for (let i = 0; i < str.length; i++) h = str.charCodeAt(i) + ((h << 5) - h); return Math.abs(h % 1000); };
+    const price = hotel.minRate || (50 + (generateSeedLocal(hotel.code?.toString() || 'x') % 200));
 
     let description = "Experience unparalleled comfort and exceptional service at our stunning property. Whether you're traveling for business or leisure, we offer top-tier amenities, elegantly appointed rooms, and a prime location to explore everything the city has to offer.";
     if (typeof hotel.description === 'string') {

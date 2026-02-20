@@ -19,7 +19,8 @@ export default function HotelCard({ hotel, onCompare, isCompared }) {
         ? `https://photos.hotelbeds.com/giata/original/${hotel.images[0].path}`
         : `https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&h=300&fit=crop&auto=format&q=80&sig=${imageSeed}`;
 
-    const price = hotel.minRate || Math.floor(Math.random() * 200) + 50;
+    const price = hotel.minRate || (50 + (generateSeed(hotel.code?.toString() || 'x') % 200));
+
 
     return (
         <motion.div
