@@ -3,25 +3,23 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# Copy package files
 COPY package*.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy application code
 COPY . .
 
-# Build the app
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM node:18-alpine
 
-# Copy built assets to Nginx
-COPY --from=builder /app/dist /usr/share/nginx/html
+WORKDIR /app
 
-# Expose port (default for Nginx is 80)
-EXPOSE 80
+RUN npm install -g serve
 
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+
+CMD ["serve", "-s", "dist", "-l", "3000"]
